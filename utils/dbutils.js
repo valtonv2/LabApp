@@ -13,33 +13,51 @@ let dbErrorhandler = (err) => {
 
 }
 
-
 //Method for getting all measurements in database
 const getAllMeasurements = () => {
     
     let db = new sqlite3.Database(dbPath, dbErrorhandler)
     let sql = 'SELECT * FROM measurements'
+   
+    return new Promise((resolve, reject) => {
+     db.all(sql,[], (err,rows) => {
 
-    const promise = new Promise(
-        
-        db.all(sql,[], (err,rows) => {
-
-        if(err) throw err
-        console.log("data ", rows)
-        return rows
+            if(err) reject(err)
+            else{
+            console.log("data ", rows)
+            db.close()
+            resolve(rows)
+            }
 
          })
-    )
+    })
+}
 
-    db.close()
+//Method for adding a single measurement to database
+const addMeasurement = (measurementData) => {
 
-    return promise
+    let dataPrepared = Object.values(measurementData)
 
+    let db = new sqlite3.Database(dbPath, dbErrorhandler)
+    let sql = 'INSERT INTO measurements (id, name, healthyupper, healthylower) VALUES (?,?,?,?) '
+    console.log(sql)
+    return new Promise((resolve, reject) => {
+        db.run(sql, dataPrepared, (err) => {
+   
+            db.close()
+            
+            if(err) reject(err)
+            else resolve(measurementData)
+               
+            })
+       })
 }
 
 const dbOps = {
 
-    getall() {getAllMeasurements()}
+    getAll() {return getAllMeasurements()},
+    
+    addOne(data) {return addMeasurement(data)}
 
 }
 

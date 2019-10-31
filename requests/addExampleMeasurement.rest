@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/measurements
+Content-Type: application/json
+
+
+    {"id":2,
+    "name":"Kissojen määrä",
+    "healthyupper":2,
+    "healthylower":1}

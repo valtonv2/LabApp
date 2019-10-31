@@ -7,7 +7,13 @@ const dbOps = require('../utils/dbutils')
 
 measurementRouter.get('/', (request, response) => {
     
-    dbOps.getall().then(data => response.json(data))
+  dbOps.getAll().then(data => response.json(data))
+
+})
+
+measurementRouter.post('/', (request, response) => {
+
+    dbOps.addOne(request.body).then(added => response.json(added))
 
 })
 

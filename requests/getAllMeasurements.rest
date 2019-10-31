@@ -1,1 +1,1 @@
-GET  http://localhost:3001/api/measurements
+GET  http://localhost:3003/api/measurements
