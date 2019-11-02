@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "id": "1",
-    "name": "Koirien määrä",
-    "healthyupper": 2,
-    "healthylower": 1
+    "name": "Jeesus",
+    "healthyupper": 9001,
+    "healthylower": 2
 }

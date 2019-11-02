@@ -98,13 +98,18 @@ const updateMeasurement = (id, newData) => {
 
     let db = new sqlite3.Database(dbPath, dbErrorhandler)
     console.log('Equality', id === newData.id)
-    let sql = `UPDATE measurements 
-               SET name = '${newData.name}'
-               WHERE id = "(?)"`
+    let sql = `UPDATE measurements
+               SET id = (?), 
+               name = (?),
+               healthyupper = (?),
+               healthylower = (?)
+               WHERE id = (?)`
     console.log(sql)
+
+    let preparedData = Object.values(newData).concat(newData.id)
     
     return new Promise((resolve, reject) => {
-        db.run(sql, id, function(err){
+        db.run(sql, preparedData, function(err){
    
             console.log('Changes: ', this.changes)
             db.close()
