@@ -1,8 +1,9 @@
 const sqlite3 = require('sqlite3').verbose()
+const config = require('./config')
 
 //Connect to database
 
-let dbPath = './MeasurementDB.db'
+let dbPath = config.DBPATH
 
 let dbErrorhandler = (err) => {
    
@@ -10,6 +11,25 @@ let dbErrorhandler = (err) => {
         return console.error(err.message)
     }
     console.log('Connection to in-memory database established')
+
+}
+
+const runAsyncSql = (sql) => {
+
+    let db = new sqlite3.Database(dbPath, dbErrorhandler)
+   
+    return new Promise((resolve, reject) => {
+     db.run(sql,[], (err) => {
+
+            if(err) reject(err)
+            else{
+            console.log("data ")
+            db.close()
+            resolve("Ok")
+            }
+
+         })
+    })
 
 }
 
@@ -101,6 +121,29 @@ const updateMeasurement = (id, newData) => {
 
 }
 
+//Example measurements for use in tests
+
+const examples = [
+
+    {
+        "id": "1",
+        "name": "hemoglobin",
+        "healthyupper": 0.3,
+        "healthylower": 0.1
+    },
+    {
+        "id": "2",
+        "name": "temperature",
+        "healthyupper": 37.5,
+        "healthylower": 35
+    }
+
+]
+
+
+
+
+
 
 
 
@@ -118,7 +161,11 @@ const dbOps = {
 
     deleteOne(id) {return deleteMeasurement(id)},
 
-    updateOne(id, newData) {return updateMeasurement(id, newData)}
+    updateOne(id, newData) {return updateMeasurement(id, newData)},
+
+    runSql(sql) {return runAsyncSql(sql)},
+
+    examples: examples
 
 
 

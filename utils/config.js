@@ -1,5 +1,12 @@
 require('dotenv').config()
 
 let PORT = process.env.PORT
+let DBPATH = './MeasurementDB.db'
 
-module.exports = {PORT}
+if(process.env.NODE_ENV === 'test'){
+
+    DBPATH = './testDB.db'
+
+}
+
+module.exports = {PORT, DBPATH}
