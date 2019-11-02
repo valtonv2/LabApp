@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/measurements/1
+Content-Type: application/json
+
+{
+    "id": "1",
+    "name": "Koirien määrä",
+    "healthyupper": 2,
+    "healthylower": 1
+}

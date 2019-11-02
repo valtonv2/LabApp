@@ -3,6 +3,6 @@ Content-Type: application/json
 
 
     {"id":2,
-    "name":"Kissojen määrä",
+    "name":"Hemoglobiini",
     "healthyupper":2,
     "healthylower":1}
