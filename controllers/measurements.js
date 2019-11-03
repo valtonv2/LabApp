@@ -5,36 +5,36 @@ const dbOps = require('../utils/dbutils')
 
 //Get all measurements
 
-measurementRouter.get('/', (request, response) => {
+measurementRouter.get('/', (request, response, next) => {
     
-  dbOps.getAll().then(data => response.json(data))
+  dbOps.getAll().then(data => response.json(data)).catch(error => next(error))
 
 })
 
 //Add new measurement
 
-measurementRouter.post('/', (request, response) => {
+measurementRouter.post('/', (request, response, next) => {
 
-    dbOps.addOne(request.body).then(added => response.json(added))
+    dbOps.addOne(request.body).then(added => response.json(added)).catch(error => next(error))
 
 })
 
 //Delete a measurement
 
-measurementRouter.delete('/:id', (request, response) => {
+measurementRouter.delete('/:id', (request, response, next) => {
 
   const id = request.params.id
-  dbOps.deleteOne(id).then(response.status(204).end())
+  dbOps.deleteOne(id).then(response.status(204).end()).catch(error => next(error))
 
 })
 
 //Update measurement
-measurementRouter.put('/:id', (request, response) => {
+measurementRouter.put('/:id', (request, response, next) => {
 
   const id = request.params.id
   const newMeasurement = request.body
 
-  dbOps.updateOne(id, newMeasurement).then(response.json(newMeasurement))
+  dbOps.updateOne(id, newMeasurement).then(response.json(newMeasurement)).catch(error => next(error))
 
 
 })

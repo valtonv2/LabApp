@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose()
 const config = require('./config')
 
+
 //Connect to database
 
 let dbPath = config.DBPATH
@@ -106,7 +107,7 @@ const updateMeasurement = (id, newData) => {
                WHERE id = (?)`
     console.log(sql)
 
-    let preparedData = Object.values(newData).concat(newData.id)
+    let preparedData = Object.values(newData).concat(id)
     
     return new Promise((resolve, reject) => {
         db.run(sql, preparedData, function(err){
@@ -115,7 +116,7 @@ const updateMeasurement = (id, newData) => {
             db.close()
             
             
-            if(err){ reject(err)}
+            if(err){reject(err)}
             else{
                 console.log('Changes: ', this.changes)
                 resolve(newData)

@@ -4,5 +4,5 @@ Content-Type: application/json
 
     {"id":2,
     "name":"Hemoglobiini",
-    "healthyupper":2,
+    "healthyupper":"Sprölölöö",
     "healthylower":1}
