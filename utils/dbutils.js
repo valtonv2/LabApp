@@ -6,7 +6,7 @@ const config = require('./config')
 
 let dbPath = config.DBPATH
 
-let dbErrorhandler = (err) => {
+let dbErrorHandler = (err) => {
    
     if(err){
         return console.error(err.message)
@@ -15,21 +15,46 @@ let dbErrorhandler = (err) => {
 
 }
 
-const runAsyncSql = (sql) => {
+const ensureDb = async () => {
 
-    let db = new sqlite3.Database(dbPath, dbErrorhandler)
+    const sql = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL, `name` TEXT NOT NULL, `healthyupper` INTEGER NOT NULL, `healthylower` INTEGER NOT NULL )'
+    await runAsyncSql(sql, 'run', [])
+
+    console.log('Database ensured')
+    
+}
+
+
+const runAsyncSql = (sql, method, data) => {
+
+    let db = new sqlite3.Database(dbPath, dbErrorHandler)
    
     return new Promise((resolve, reject) => {
-     db.run(sql,[], (err) => {
+    
+     if(method === 'run'){    
+    
+         db.run(sql,data, (err, rows) => {
+
+               if(err) reject(err)
+               else{
+               db.close()
+               if(rows) resolve(rows)
+               else resolve("Ok")
+               }
+
+              })
+     }else{
+        db.all(sql,data, (err, rows) => {
 
             if(err) reject(err)
             else{
-            console.log("data ")
             db.close()
-            resolve("Ok")
+            if(rows) resolve(rows)
+            else resolve("Ok")
             }
 
-         })
+           })
+     }
     })
 
 }
@@ -39,21 +64,10 @@ const runAsyncSql = (sql) => {
 
 const getAllMeasurements = () => {
     
-    let db = new sqlite3.Database(dbPath, dbErrorhandler)
-    let sql = 'SELECT * FROM measurements'
    
-    return new Promise((resolve, reject) => {
-     db.all(sql,[], (err,rows) => {
-
-            if(err) reject(err)
-            else{
-            console.log("data ", rows)
-            db.close()
-            resolve(rows)
-            }
-
-         })
-    })
+    let sql = 'SELECT * FROM measurements'
+    
+    return runAsyncSql(sql, 'all', [])
 }
 
 //Method for adding a single measurement to database
@@ -61,69 +75,33 @@ const addMeasurement = (measurementData) => {
 
     let dataPrepared = Object.values(measurementData)
 
-    let db = new sqlite3.Database(dbPath, dbErrorhandler)
     let sql = 'INSERT INTO measurements (id, name, healthyupper, healthylower) VALUES (?,?,?,?) '
-    console.log(sql)
-    return new Promise((resolve, reject) => {
-        db.run(sql, dataPrepared, (err) => {
-   
-            db.close()
-            
-            if(err) reject(err)
-            else resolve(measurementData)
-               
-            })
-       })
+    
+    return runAsyncSql(sql, 'run', dataPrepared)
 }
 
 //Method for deleting a measurement by id from database
 
 const deleteMeasurement = (id) => {
 
-    let db = new sqlite3.Database(dbPath, dbErrorhandler)
     let sql = 'DELETE FROM measurements WHERE id = (?)'
-    console.log(sql)
-    return new Promise((resolve, reject) => {
-        db.run(sql, id, (err) => {
    
-            db.close()
-            
-            if(err) reject(err)
-            else resolve(id)
-               
-            })
-       })
+    return runAsyncSql(sql, 'run', id)
+    
 }
 
 const updateMeasurement = (id, newData) => {
 
-    let db = new sqlite3.Database(dbPath, dbErrorhandler)
-    console.log('Equality', id === newData.id)
     let sql = `UPDATE measurements
                SET id = (?), 
                name = (?),
                healthyupper = (?),
                healthylower = (?)
                WHERE id = (?)`
-    console.log(sql)
-
+    
     let preparedData = Object.values(newData).concat(id)
     
-    return new Promise((resolve, reject) => {
-        db.run(sql, preparedData, function(err){
-   
-            console.log('Changes: ', this.changes)
-            db.close()
-            
-            
-            if(err){reject(err)}
-            else{
-                console.log('Changes: ', this.changes)
-                resolve(newData)
-            } 
-               
-            })
-       })
+    return runAsyncSql(sql, 'run', preparedData)
 
 }
 
@@ -149,16 +127,6 @@ const examples = [
 
 
 
-
-
-
-
-
-
-
-
-
-
 const dbOps = {
 
     getAll() {return getAllMeasurements()},
@@ -171,10 +139,9 @@ const dbOps = {
 
     runSql(sql) {return runAsyncSql(sql)},
 
+    ensureDB() {return ensureDb()},
+
     examples: examples
-
-
-
 
 
 }

@@ -1,9 +1,9 @@
-PUT http://localhost:3003/api/measurements/1
+PUT http://localhost:3003/api/measurements/2
 Content-Type: application/json
 
 {
-    "id": "1",
-    "name": "Jeesus",
+    "id": "4",
+    "name": "Valkosolu",
     "healthyupper": 9001,
     "healthylower": 2
 }

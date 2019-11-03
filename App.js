@@ -4,8 +4,11 @@ const cors = require('cors')
 const morgan = require('morgan')
 const measurementRouter = require('./controllers/measurements')
 const errorHandler = require('./utils/middleware')
+const dbOps = require('./utils/dbutils')
 
 const app = express()
+
+dbOps.ensureDB() //Make sure that database exists
 
 app.use(cors())
 app.use(bodyParser.json())

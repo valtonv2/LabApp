@@ -2,7 +2,7 @@ POST http://localhost:3003/api/measurements
 Content-Type: application/json
 
 
-    {"id":2,
-    "name":"Hemoglobiini",
-    "healthyupper":"Sprölölöö",
+    {"id":5,
+    "name":"Munasolu",
+    "healthyupper":"45",
     "healthylower":1}

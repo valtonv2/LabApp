@@ -34,7 +34,7 @@ measurementRouter.put('/:id', (request, response, next) => {
   const id = request.params.id
   const newMeasurement = request.body
 
-  dbOps.updateOne(id, newMeasurement).then(response.json(newMeasurement)).catch(error => next(error))
+  dbOps.updateOne(id, newMeasurement).then(update => response.json(request.body)).catch(error => next(error))
 
 
 })

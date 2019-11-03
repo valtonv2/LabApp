@@ -5,7 +5,7 @@ const errorHandler = function (err, req, res, next){
     res.status(400).send({
         errorName: err.name,
         errorMessage: err.message
-    })
+    }).end()
 
 
 }
