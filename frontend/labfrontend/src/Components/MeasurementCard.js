@@ -1,23 +1,29 @@
 import React from 'react'
 
+
 const MeasurementCard = ({measurement, deleteFunction}) => {
 
     const normalView = () => {
 
         return(
-        
-        <div>
-            <h3>{measurement.name}</h3>
+    <>
+        <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
 
-            <p>Healthy upper limit: {measurement.healthyupper}</p>
+        <div class="row">
+        <div class="col col-lg-6">
+            <div class="card">
 
-            <p>Healthy lower limit: {measurement.healthylower}</p>
+                <h3 class="card-title">{measurement.name}</h3>
 
-            <button class = "button-primary" onClick={deleteFunction(measurement.id)}>Delete</button> 
+                <p>Healthy upper limit: {measurement.healthyupper}</p>
 
+                <p>Healthy lower limit: {measurement.healthylower}</p>
 
+                <button class = "button-danger" onClick={deleteFunction(measurement.id)}>Delete</button> 
+            </div>
         </div>
-
+        </div>
+    </>
     )}
 
    return(normalView())
