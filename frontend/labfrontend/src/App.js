@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import MeasurementList from './Components/MeasurementList'
 import  Notification from './Components/Notification'
+import serverComm from './Services/Measurements'
 
 
 
 const App = () => {
-
 
 
 
@@ -32,6 +32,16 @@ const App = () => {
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
 
+  const [newName, setNewName] = useState('')
+  const [newUpper, setNewUpper] = useState('')
+  const [newLower, setnewLower] = useState('')
+
+  const handleName = (event) => setNewName(event.target.value)
+  const handleUpper = (event) => setNewUpper(event.target.value)
+  const handleLower = (event) => setNewLower(event.target.value)
+
+  useEffect(() => serverComm.getData().then(d => setMeasurements(d)))
+
   const sendMessage = (message, isError) => {
 
     setMessage(message)
@@ -44,18 +54,80 @@ const App = () => {
 
   }
 
+  const getId = () => allMeasurements.length + 1
+
+ 
 
   const deleteMeasurement = (id) => () => {
 
-    const newList = allMeasurements.filter(m => m.id !== id)
+    const target = allMeasurements.find(m => m === id)
 
-    setMeasurements(newList)
-    sendMessage('Deletion successful', true)
+    if(window.confirm(`Do you want to delete ${target.name}`)){
 
+      serverComm.deleteData(id).then(_data => {
+
+      const newList = allMeasurements.filter(m => m.id !== id)
+
+      setMeasurements(newList)
+      sendMessage('Deletion successful', false)
+
+      })
+    }else sendMessage('Delete cancelled', false)
+  }
+
+ 
+ 
+  const addMeasurement = (event) => {
+
+    event.preventDefault()
+
+    if(newName, newUpper, newLower && !allMeasurements.includes(m => m.name === newName)){
+
+      const newId = getId()
+
+      const dataObj = {
+        id:newId,
+        name:newName,
+        healthyupper:newUpper,
+        healthylower:newLower
+      }
+
+      serverComm.postData(dataObj).then(response => {
+
+        setMeasurements(allMeasurements.concat(response))
+        sendMessage('Measurement added', false)
+
+        }
+      }).catch(error => sendMessage(error.response.data.error))
+
+    }else if(newName, newUpper, newLower, window.confirm("A measurement with this name already exists. Do you want to update it?")){
+     
+      const oldId = allmeasurements.find(m => m.name === newName).id
+      const dataObj = {
+        id: oldId,
+        name:newName,
+        healthyupper:newUpper,
+        healthylower:newLower
+      }
+
+      serverComm.updateData(dataObj).then(response => {
+
+        setMeasurements(allMeasurements.map(m => m.id !== oldId ? m:dataObj))
+        sendMessage('Measurement updated succesfully', false)
+
+      }).catch(error => sendMessage(error.response.data.error)
+
+    }else{
+
+      sendMessage('Add cancelled', true)
+    }
+  
   }
 
 
-  console.log(examples())
+
+
+  
   return (
     <div>
       <h1>Measurement System</h1>
