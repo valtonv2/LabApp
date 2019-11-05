@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import MeasurementList from './Components/MeasurementList'
+import  Notification from './Components/Notification'
 
 
 
@@ -28,6 +29,20 @@ const App = () => {
   ])}
 
   const [allMeasurements, setMeasurements] = useState(examples())
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState('')
+
+  const sendMessage = (message, isError) => {
+
+    setMessage(message)
+    setTimeout(()=>setMessage(''), 3000)
+    
+    if(isError){
+      setError(true)
+      setTimeout(()=>setError(false), 3000)
+    }
+
+  }
 
 
   const deleteMeasurement = (id) => () => {
@@ -35,6 +50,7 @@ const App = () => {
     const newList = allMeasurements.filter(m => m.id !== id)
 
     setMeasurements(newList)
+    sendMessage('Deletion successful', true)
 
   }
 
@@ -43,7 +59,7 @@ const App = () => {
   return (
     <div>
       <h1>Measurement System</h1>
-
+      <Notification msg={message} isError={error}/>
       <MeasurementList allmeasurements = {allMeasurements} delFunction = {deleteMeasurement}/>
 
     </div>
