@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'api/measurements'
+const baseUrl = 'http://localhost:3003/api/measurements/'
 
 
 
@@ -22,7 +22,7 @@ const deleteData = (id) => {
 
 }
 
-const updateData = (newdata) => {
+const updateData = (newData) => {
 
     return(axios.put(`${baseUrl}/${newData.id}`, newData).then(response => response.data))
 

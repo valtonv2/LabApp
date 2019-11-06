@@ -2,46 +2,39 @@ import React, {useState, useEffect} from 'react';
 import MeasurementList from './Components/MeasurementList'
 import  Notification from './Components/Notification'
 import serverComm from './Services/Measurements'
+import MeasurementForm from './Components/MeasurementForm'
+
+const uuidv1 = require('uuid/v1')
+
 
 
 
 const App = () => {
 
 
-
-  const examples = () => {
-    
-    console.log('Printing examples')
-    
-    return ([
-
-    {"id":1,
-     "name":"Test",
-     "healthyupper":5,
-     "healthylower":3
-    },
-    {"id":2,
-     "name":"Test2",
-     "healthyupper":365,
-     "healthylower":200
-    }
-  
-  ])}
-
-  const [allMeasurements, setMeasurements] = useState(examples())
+  const [allMeasurements, setMeasurements] = useState([])
   const [error, setError] = useState(false)
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(null)
 
   const [newName, setNewName] = useState('')
   const [newUpper, setNewUpper] = useState('')
-  const [newLower, setnewLower] = useState('')
+  const [newLower, setNewLower] = useState('')
 
   const handleName = (event) => setNewName(event.target.value)
   const handleUpper = (event) => setNewUpper(event.target.value)
   const handleLower = (event) => setNewLower(event.target.value)
 
-  useEffect(() => serverComm.getData().then(d => setMeasurements(d)))
+  useEffect(() => {
 
+    serverComm.getData().then(response => {
+
+      setMeasurements(response)
+
+    })
+
+  }, [])
+
+  
   const sendMessage = (message, isError) => {
 
     setMessage(message)
@@ -54,13 +47,10 @@ const App = () => {
 
   }
 
-  const getId = () => allMeasurements.length + 1
-
- 
 
   const deleteMeasurement = (id) => () => {
 
-    const target = allMeasurements.find(m => m === id)
+    const target = allMeasurements.find(m => m.id === id)
 
     if(window.confirm(`Do you want to delete ${target.name}`)){
 
@@ -81,9 +71,9 @@ const App = () => {
 
     event.preventDefault()
 
-    if(newName, newUpper, newLower && !allMeasurements.includes(m => m.name === newName)){
-
-      const newId = getId()
+    if(newName && newUpper && newLower && !allMeasurements.map(m => m.name).includes(newName)){
+      console.log("Add branch called")
+      const newId = uuidv1()
 
       const dataObj = {
         id:newId,
@@ -96,13 +86,15 @@ const App = () => {
 
         setMeasurements(allMeasurements.concat(response))
         sendMessage('Measurement added', false)
+        console.log(allMeasurements)
 
-        }
-      }).catch(error => sendMessage(error.response.data.error))
-
-    }else if(newName, newUpper, newLower, window.confirm("A measurement with this name already exists. Do you want to update it?")){
+        }).catch(error => sendMessage(error.response.data.error))
+      
+      }else if(newName && newUpper && newLower && window.confirm("A measurement with this name already exists. Do you want to update it?")){
      
-      const oldId = allmeasurements.find(m => m.name === newName).id
+        console.log("Update branch called")
+      const oldId = allMeasurements.find(m => m.name === newName).id
+     
       const dataObj = {
         id: oldId,
         name:newName,
@@ -113,9 +105,10 @@ const App = () => {
       serverComm.updateData(dataObj).then(response => {
 
         setMeasurements(allMeasurements.map(m => m.id !== oldId ? m:dataObj))
+        console.log(allMeasurements)
         sendMessage('Measurement updated succesfully', false)
 
-      }).catch(error => sendMessage(error.response.data.error)
+      }).catch(error => sendMessage(error.response.data.error))
 
     }else{
 
@@ -132,6 +125,16 @@ const App = () => {
     <div>
       <h1>Measurement System</h1>
       <Notification msg={message} isError={error}/>
+      
+      <MeasurementForm
+      addFunction={addMeasurement}
+      currentName={newName}
+      currentUpper={newUpper}
+      currentLower={newLower}
+      nameHandler={handleName}
+      upperHandler={handleUpper}
+      lowerHandler={handleLower}
+      />
       <MeasurementList allmeasurements = {allMeasurements} delFunction = {deleteMeasurement}/>
 
     </div>

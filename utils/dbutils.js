@@ -38,7 +38,8 @@ const runAsyncSql = (sql, method, data) => {
                if(err) reject(err)
                else{
                db.close()
-               if(rows) resolve(rows)
+               if(data && data.length >= 1) resolve(data)
+               else if(rows) resolve(rows)
                else resolve("Ok")
                }
 
@@ -49,7 +50,8 @@ const runAsyncSql = (sql, method, data) => {
             if(err) reject(err)
             else{
             db.close()
-            if(rows) resolve(rows)
+            if(data && data.length >= 1) resolve(data)
+            else if(rows) resolve(rows)
             else resolve("Ok")
             }
 

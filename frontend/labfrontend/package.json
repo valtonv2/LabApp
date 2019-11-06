@@ -5,10 +5,12 @@
   "dependencies": {
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",
+    "@types/uuid": "^3.4.6",
     "mustard-ui": "0.0.8",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "uuid": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",

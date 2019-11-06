@@ -15,7 +15,7 @@ measurementRouter.get('/', (request, response, next) => {
 
 measurementRouter.post('/', (request, response, next) => {
 
-    dbOps.addOne(request.body).then(added => response.json(added)).catch(error => next(error))
+    dbOps.addOne(request.body).then(added => response.json(request.body)).catch(error => next(error))
 
 })
 
