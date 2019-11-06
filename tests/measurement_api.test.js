@@ -9,9 +9,9 @@ const api = supertest(app)
 //Create test database before unit tests
 beforeEach(async () => {
 
-    const sql1 = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL, `name` TEXT NOT NULL, `healthyupper` INTEGER NOT NULL, `healthylower` INTEGER NOT NULL )'
+    const sql1 = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL,  `name` TEXT NOT NULL, `unit` TEXT NOT NULL, `healthyupper` NUMBER NOT NULL, `healthylower` NUMBER NOT NULL )'
     const sql2 = 'DELETE FROM "measurements"'
-    const sql3 = 'INSERT INTO measurements (id, name, healthyupper, healthylower) VALUES ("0", "Testi",10,20)'
+    const sql3 = 'INSERT INTO measurements (id, name, unit, healthyupper, healthylower) VALUES ("0", "Testi","kg",10,20)'
    
     await dbOps.runSql(sql1)
     await dbOps.runSql(sql2)

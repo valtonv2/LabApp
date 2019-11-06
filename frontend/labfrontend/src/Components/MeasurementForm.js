@@ -11,6 +11,8 @@ const MeasurementForm = (props) => {
             <input value={props.currentUpper} onChange={props.upperHandler}/>
             <p>Healthy lower</p>
             <input value={props.currentLower} onChange={props.lowerHandler}/>
+            <p>Unit</p>
+            <input value={props.currentUnit} onChange={props.unitHandler}/>
 
             <div>
                 <button type="submit">Send</button>

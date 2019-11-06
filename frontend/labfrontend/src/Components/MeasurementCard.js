@@ -19,6 +19,8 @@ const MeasurementCard = ({measurement, deleteFunction}) => {
 
                 <p>Healthy lower limit: {measurement.healthylower}</p>
 
+                <p>Unit: {measurement.unit}</p>
+
                 <button className = "button-danger" onClick={deleteFunction(measurement.id)}>Delete</button> 
             </div>
         </div>

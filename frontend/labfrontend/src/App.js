@@ -19,10 +19,13 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newUpper, setNewUpper] = useState('')
   const [newLower, setNewLower] = useState('')
+  const [newUnit, setNewUnit] = useState('')
+
 
   const handleName = (event) => setNewName(event.target.value)
   const handleUpper = (event) => setNewUpper(event.target.value)
   const handleLower = (event) => setNewLower(event.target.value)
+  const handleUnit = (event) => setNewUnit(event.target.value)
 
   useEffect(() => {
 
@@ -71,13 +74,14 @@ const App = () => {
 
     event.preventDefault()
 
-    if(newName && newUpper && newLower && !allMeasurements.map(m => m.name).includes(newName)){
+    if(newName && newUnit && newUpper && newLower && !allMeasurements.map(m => m.name).includes(newName)){
       console.log("Add branch called")
       const newId = uuidv1()
 
       const dataObj = {
         id:newId,
         name:newName,
+        unit:newUnit,
         healthyupper:newUpper,
         healthylower:newLower
       }
@@ -90,7 +94,7 @@ const App = () => {
 
         }).catch(error => sendMessage(error.response.data.error))
       
-      }else if(newName && newUpper && newLower && window.confirm("A measurement with this name already exists. Do you want to update it?")){
+      }else if(newName && newUnit && newUpper && newLower && window.confirm("A measurement with this name already exists. Do you want to update it?")){
      
         console.log("Update branch called")
       const oldId = allMeasurements.find(m => m.name === newName).id
@@ -98,6 +102,7 @@ const App = () => {
       const dataObj = {
         id: oldId,
         name:newName,
+        unit:newUnit,
         healthyupper:newUpper,
         healthylower:newLower
       }
@@ -131,9 +136,11 @@ const App = () => {
       currentName={newName}
       currentUpper={newUpper}
       currentLower={newLower}
+      currentUnit={newUnit}
       nameHandler={handleName}
       upperHandler={handleUpper}
       lowerHandler={handleLower}
+      unitHandler={handleUnit}
       />
       <MeasurementList allmeasurements = {allMeasurements} delFunction = {deleteMeasurement}/>
 

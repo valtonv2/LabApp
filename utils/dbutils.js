@@ -17,7 +17,7 @@ let dbErrorHandler = (err) => {
 
 const ensureDb = async () => {
 
-    const sql = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL, `name` TEXT NOT NULL, `healthyupper` INTEGER NOT NULL, `healthylower` INTEGER NOT NULL )'
+    const sql = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL,  `name` TEXT NOT NULL, `unit` TEXT NOT NULL, `healthyupper` NUMBER NOT NULL, `healthylower` NUMBER NOT NULL )'
     await runAsyncSql(sql, 'run', [])
 
     console.log('Database ensured')
@@ -77,7 +77,7 @@ const addMeasurement = (measurementData) => {
 
     let dataPrepared = Object.values(measurementData)
 
-    let sql = 'INSERT INTO measurements (id, name, healthyupper, healthylower) VALUES (?,?,?,?) '
+    let sql = 'INSERT INTO measurements (id, name, unit, healthyupper, healthylower) VALUES (?,?,?,?,?) '
     
     return runAsyncSql(sql, 'run', dataPrepared)
 }
@@ -97,6 +97,7 @@ const updateMeasurement = (id, newData) => {
     let sql = `UPDATE measurements
                SET id = (?), 
                name = (?),
+               unit = (?),
                healthyupper = (?),
                healthylower = (?)
                WHERE id = (?)`
@@ -114,12 +115,14 @@ const examples = [
     {
         "id": "1",
         "name": "hemoglobin",
+        "unit": "mmol/l",
         "healthyupper": 0.3,
         "healthylower": 0.1
     },
     {
         "id": "2",
         "name": "temperature",
+        "unit": "mmol/l",
         "healthyupper": 37.5,
         "healthylower": 35
     }
