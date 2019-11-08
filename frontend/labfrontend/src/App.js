@@ -92,7 +92,7 @@ const App = () => {
         sendMessage('Measurement added', false)
         console.log(allMeasurements)
 
-        }).catch(error => sendMessage(error.response.data.error))
+        }).catch(error => sendMessage(error.response.data.errorMessage, true))
       
       }else if(newName && newUnit && newUpper && newLower && window.confirm("A measurement with this name already exists. Do you want to update it?")){
      
@@ -113,7 +113,7 @@ const App = () => {
         console.log(allMeasurements)
         sendMessage('Measurement updated succesfully', false)
 
-      }).catch(error => sendMessage(error.response.data.error))
+      }).catch(error => sendMessage(error.response.data.errorMessage, true))
 
     }else{
 
@@ -127,6 +127,7 @@ const App = () => {
 
   
   return (
+    
     <div>
       <h1>Measurement System</h1>
       <Notification msg={message} isError={error}/>

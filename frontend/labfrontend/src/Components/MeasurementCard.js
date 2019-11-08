@@ -10,7 +10,7 @@ const MeasurementCard = ({measurement, deleteFunction}) => {
         <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
 
         <div className="row">
-        <div className="col col-lg-6">
+        <div className="col col-lg-3">
             <div className="card">
 
                 <h3 className="card-title">{measurement.name}</h3>

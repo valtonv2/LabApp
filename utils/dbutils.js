@@ -17,7 +17,7 @@ let dbErrorHandler = (err) => {
 
 const ensureDb = async () => {
 
-    const sql = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL,  `name` TEXT NOT NULL, `unit` TEXT NOT NULL, `healthyupper` NUMBER NOT NULL, `healthylower` NUMBER NOT NULL )'
+    const sql = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL,  `name` TEXT NOT NULL, `unit` TEXT NOT NULL, `healthyupper` REAL CHECK(typeof(healthyupper)="REAL") NOT NULL, `healthylower` REAL NOT NULL )'
     await runAsyncSql(sql, 'run', [])
 
     console.log('Database ensured')
