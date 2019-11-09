@@ -78,8 +78,11 @@ const App = () => {
 
     event.preventDefault()
 
-    if(newName && newUnit && newUpper && newLower && !allMeasurements.map(m => m.name).includes(newName)){
-      console.log('Add branch called')
+    const floatUpper = parseFloat(newUpper)
+    const floatLower = parseFloat(newLower)
+
+    if(newName && newUnit && !isNaN(floatUpper) && !isNaN(floatLower) && floatUpper >= floatLower && !allMeasurements.map(m => m.name).includes(newName)){
+     
 
       const newId = uuidv1()
 
@@ -87,8 +90,8 @@ const App = () => {
         id:newId,
         name:newName,
         unit:newUnit,
-        healthyupper:newUpper,
-        healthylower:newLower
+        healthyupper:floatUpper,
+        healthylower:floatLower
       }
 
       serverComm.postData(dataObj).then(response => {
@@ -97,9 +100,14 @@ const App = () => {
         sendMessage('Measurement added', false)
         console.log(allMeasurements)
 
+        setNewName('')
+        setNewUpper('')
+        setNewLower('')
+        setNewUnit('')
+
       }).catch(error => sendMessage('Adding measurement failed.', true))
 
-    }else if(newName && newUnit && newUpper && newLower && window.confirm('A measurement with this name already exists. Do you want to update it?')){
+    }else if(newName && newUnit && !isNaN(floatUpper) && !isNaN(floatLower) && floatUpper >= floatLower && window.confirm('A measurement with this name already exists. Do you want to update it?')){
 
       console.log('Update branch called')
       const oldId = allMeasurements.find(m => m.name === newName).id
@@ -108,8 +116,8 @@ const App = () => {
         id: oldId,
         name:newName,
         unit:newUnit,
-        healthyupper:newUpper,
-        healthylower:newLower
+        healthyupper:floatUpper,
+        healthylower:floatLower
       }
 
       serverComm.updateData(dataObj).then(response => {
@@ -118,21 +126,32 @@ const App = () => {
         console.log(allMeasurements)
         sendMessage('Measurement updated succesfully', false)
 
+        setNewName('')
+        setNewUpper('')
+        setNewLower('')
+        setNewUnit('')
+
       }).catch(error => sendMessage('Updating measurement failed.', true))
 
     }else{
-      sendMessage('Add cancelled', true)
+      sendMessage(getErrorMessage(newName, floatUpper, floatLower, newUnit), true)
     }
   }
 
+  const getErrorMessage = (name, upper, lower, unit) => {
 
-
+    if(isNaN(upper) || isNaN(lower)) return('The reference values must be numbers.')
+    else if (upper < lower) return('The upper limit cannot be smaller than the lower limit')
+    else if(!name || !upper || !lower || !unit) return('Please fill all fields before sending.')
+    else return('Add cancelled.')
+  }
+  
 
 
   return (
-    <>
+    <div style={ { backgroundColor:'darkgray', position:'relative', minHeight:'100vh' } }>
       <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
-      <div style={ { backgroundColor:'darkgray' } }>
+      <div style={{paddingBottom:'2.5rem'}}>
 
         <div className="align-center">
           <h1>Measurement System</h1>
@@ -160,9 +179,13 @@ const App = () => {
           delFunction = {deleteMeasurement}
           />
 
+          <footer style = {{backgroundColor:'red', position:'absolute', bottom:'0', height:'2.5rem' }}>
+            <div>This is a small app made as a task for Terveystalo using the MustardUi CSS framework.</div>
+          </footer>
+
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

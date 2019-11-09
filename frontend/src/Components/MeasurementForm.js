@@ -8,8 +8,8 @@ const MeasurementForm = (props) => {
   return(
     <>
       <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
-      <div className="panel">
-        <div className="panel-body">
+      <div>
+        <div>
           <form onSubmit={props.addFunction}>
             <div className = "form-control">
 
@@ -30,7 +30,7 @@ const MeasurementForm = (props) => {
               </p>
 
               <div>
-                <button type="submit">Send</button>
+                <button type="submit" className='button-success'>Save</button>
               </div>
 
               <p>
