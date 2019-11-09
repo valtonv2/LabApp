@@ -11,7 +11,7 @@ const MeasurementCard = ({ measurement, deleteFunction }) => {
       <>
         <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
 
-        <div className="panel">
+        <div className="panel col">
 
           <h3>{measurement.name}</h3>
 

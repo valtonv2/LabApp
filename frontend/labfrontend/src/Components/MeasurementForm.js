@@ -13,18 +13,30 @@ const MeasurementForm = (props) => {
           <form onSubmit={props.addFunction}>
             <div className = "form-control">
 
-              <p>Name</p>
-              <input value={props.currentName} onChange={props.nameHandler}/>
-              <p>Healthy upper</p>
-              <input type="number" value={props.currentUpper} onChange={props.upperHandler}/>
-              <p>Healthy lower</p>
-              <input type="number" value={props.currentLower} onChange={props.lowerHandler}/>
-              <p>Unit</p>
-              <input value={props.currentUnit} onChange={props.unitHandler}/>
+              <p>
+              <input value={props.currentName} onChange={props.nameHandler} placeholder='Name'/>
+              </p>
+
+              <p>
+              <input value={props.currentUpper} onChange={props.upperHandler}  placeholder='Healthy upper limit'/>
+              </p>
+
+              <p>
+              <input value={props.currentLower} onChange={props.lowerHandler}  placeholder='Healthy lower limit'/>
+              </p>
+
+              <p>
+              <input value={props.currentUnit} onChange={props.unitHandler}  placeholder='Unit'/>
+              </p>
 
               <div>
                 <button type="submit">Send</button>
               </div>
+
+              <p>
+              <input value={props.currentSearch} onChange={props.searchHandler}  placeholder='Search'/>
+              </p>
+
             </div>
           </form>
         </div>

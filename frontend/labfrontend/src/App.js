@@ -18,12 +18,16 @@ const App = () => {
   const [allMeasurements, setMeasurements] = useState([])
   const [error, setError] = useState(false)
   const [message, setMessage] = useState(null)
+  const [currentSearch, setSearch] = useState('')
 
   //States for measurement form
   const [newName, setNewName] = useState('')
-  const [newUpper, setNewUpper] = useState(0)
-  const [newLower, setNewLower] = useState(0)
+  const [newUpper, setNewUpper] = useState('')
+  const [newLower, setNewLower] = useState('')
   const [newUnit, setNewUnit] = useState('')
+
+  //Handle current search
+  const handleSearch = (event) => setSearch(event.target.value)
 
   //Measurement form change handlers
   const handleName = (event) => setNewName(event.target.value)
@@ -135,9 +139,10 @@ const App = () => {
 
         <div className="align-center">
           <h1>Measurement System</h1>
-          <Notification msg={message} isError={error}/>
 
           <p>Welcome to the measurement system! Use the form below to add and update measurements.</p>
+
+          <Notification msg={message} isError={error}/>
 
           <MeasurementForm
             addFunction={addMeasurement}
@@ -145,13 +150,18 @@ const App = () => {
             currentUpper={newUpper}
             currentLower={newLower}
             currentUnit={newUnit}
+            currentSearch={currentSearch}
             nameHandler={handleName}
             upperHandler={handleUpper}
             lowerHandler={handleLower}
             unitHandler={handleUnit}
+            searchHandler={handleSearch}
           />
 
-          <MeasurementList allmeasurements = {allMeasurements} delFunction = {deleteMeasurement}/>
+          <MeasurementList 
+          allmeasurements = {allMeasurements.filter(m => m.name.toLowerCase().includes(currentSearch.toLowerCase()))} 
+          delFunction = {deleteMeasurement}
+          />
 
         </div>
       </div>
