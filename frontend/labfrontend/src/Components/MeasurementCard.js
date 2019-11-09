@@ -1,34 +1,33 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable no-unused-vars */
 import React from 'react'
 
+//Element that contains single measurement data
+const MeasurementCard = ({ measurement, deleteFunction }) => {
 
-const MeasurementCard = ({measurement, deleteFunction}) => {
+  const normalView = () => {
 
-    const normalView = () => {
-
-        return(
-    <>
+    return(
+      <>
         <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
 
-        <div className="row">
-        <div className="col col-lg-3">
-            <div className="card">
+        <div className="panel">
 
-                <h3 className="card-title">{measurement.name}</h3>
+          <h3>{measurement.name}</h3>
 
-                <p>Healthy upper limit: {measurement.healthyupper}</p>
+          <p>Healthy upper limit: {measurement.healthyupper}</p>
 
-                <p>Healthy lower limit: {measurement.healthylower}</p>
+          <p>Healthy lower limit: {measurement.healthylower}</p>
 
-                <p>Unit: {measurement.unit}</p>
+          <p>Unit: {measurement.unit}</p>
 
-                <button className = "button-danger" onClick={deleteFunction(measurement.id)}>Delete</button> 
-            </div>
+          <button className = "button-danger" onClick={deleteFunction(measurement.id)}>Delete</button>
+
         </div>
-        </div>
-    </>
+      </>
     )}
 
-   return(normalView())
+  return(normalView())
 
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const measurementRouter = require('express').Router()
 const dbOps = require('../utils/dbutils')
 
@@ -6,7 +7,7 @@ const dbOps = require('../utils/dbutils')
 //Get all measurements
 
 measurementRouter.get('/', (request, response, next) => {
-    
+
   dbOps.getAll().then(data => response.json(data)).catch(error => next(error))
 
 })
@@ -15,7 +16,7 @@ measurementRouter.get('/', (request, response, next) => {
 
 measurementRouter.post('/', (request, response, next) => {
 
-    dbOps.addOne(request.body).then(added => response.json(request.body)).catch(error => next(error))
+  dbOps.addOne(request.body).then(() => response.json(request.body)).catch(error => next(error))
 
 })
 
@@ -34,10 +35,10 @@ measurementRouter.put('/:id', (request, response, next) => {
   const id = request.params.id
   const newMeasurement = request.body
 
-  dbOps.updateOne(id, newMeasurement).then(update => response.json(request.body)).catch(error => next(error))
+  dbOps.updateOne(id, newMeasurement).then(() => response.json(request.body)).catch(error => next(error))
 
 
 })
 
 
-module.exports = measurementRouter 
+module.exports = measurementRouter

@@ -1,110 +1,110 @@
+/* eslint-disable linebreak-style */
 const sqlite3 = require('sqlite3').verbose()
 const config = require('./config')
 
 
-//Connect to database
+
 
 let dbPath = config.DBPATH
 
 let dbErrorHandler = (err) => {
-   
-    if(err){
-        return console.error(err.message)
-    }
-    console.log('Connection to in-memory database established')
+
+  if(err){
+    return console.error(err.message)
+  }
+  console.log('Connection to in-memory database established')
 
 }
 
+
+//Method for ensuring that a proper database exists.
 const ensureDb = async () => {
 
-    const sql = 'CREATE TABLE IF NOT EXISTS "measurements" ( `id` TEXT NOT NULL,  `name` TEXT NOT NULL, `unit` TEXT NOT NULL, `healthyupper` REAL CHECK(typeof(healthyupper)="REAL") NOT NULL, `healthylower` REAL NOT NULL )'
-    await runAsyncSql(sql, 'run', [])
+  // eslint-disable-next-line quotes
+  const sql = "CREATE TABLE IF NOT EXISTS 'measurements' ( 'id' TEXT NOT NULL,  'name' TEXT NOT NULL, 'unit' TEXT NOT NULL, 'healthyupper' REAL NOT NULL, 'healthylower' REAL NOT NULL )"
+  await runAsyncSql(sql, 'run', [])
+  console.log('Database ensured')
 
-    console.log('Database ensured')
-    
 }
 
-
+//A method that handles database sql
+//This helps make the other database utility methods more compact
 const runAsyncSql = (sql, method, data) => {
 
-    let db = new sqlite3.Database(dbPath, dbErrorHandler)
-   
-    return new Promise((resolve, reject) => {
-    
-     if(method === 'run'){    
-    
-         db.run(sql,data, (err, rows) => {
+  let db = new sqlite3.Database(dbPath, dbErrorHandler)
 
-               if(err) reject(err)
-               else{
-               db.close()
-               if(data && data.length >= 1) resolve(data)
-               else if(rows) resolve(rows)
-               else resolve("Ok")
-               }
+  return new Promise((resolve, reject) => {
 
-              })
-     }else{
-        db.all(sql,data, (err, rows) => {
+    if(method === 'run'){
 
-            if(err) reject(err)
-            else{
-            db.close()
-            if(data && data.length >= 1) resolve(data)
-            else if(rows) resolve(rows)
-            else resolve("Ok")
-            }
+      db.run(sql,data, (err, rows) => {
 
-           })
-     }
-    })
+        if(err) reject(err)
+        else{
+          db.close()
+          if(data && data.length >= 1) resolve(data)
+          else if(rows) resolve(rows)
+          else resolve('Ok')
+        }
+      })
 
+    }else{
+
+      db.all(sql,data, (err, rows) => {
+
+        if(err) reject(err)
+        else{
+          db.close()
+          if(data && data.length >= 1) resolve(data)
+          else if(rows) resolve(rows)
+          else resolve('Ok')
+        }
+      })
+    }
+  })
 }
 
 
 //Method for getting all measurements in database
-
 const getAllMeasurements = () => {
-    
-   
-    let sql = 'SELECT * FROM measurements'
-    
-    return runAsyncSql(sql, 'all', [])
+
+  let sql = 'SELECT * FROM measurements'
+
+  return runAsyncSql(sql, 'all', [])
 }
 
 //Method for adding a single measurement to database
 const addMeasurement = (measurementData) => {
 
-    let dataPrepared = Object.values(measurementData)
+  let dataPrepared = Object.values(measurementData)
 
-    let sql = 'INSERT INTO measurements (id, name, unit, healthyupper, healthylower) VALUES (?,?,?,?,?) '
-    
-    return runAsyncSql(sql, 'run', dataPrepared)
+  let sql = 'INSERT INTO measurements (id, name, unit, healthyupper, healthylower) VALUES (?,?,?,?,?) '
+
+  return runAsyncSql(sql, 'run', dataPrepared)
 }
 
 //Method for deleting a measurement by id from database
-
 const deleteMeasurement = (id) => {
 
-    let sql = 'DELETE FROM measurements WHERE id = (?)'
-   
-    return runAsyncSql(sql, 'run', id)
-    
+  let sql = 'DELETE FROM measurements WHERE id = (?)'
+
+  return runAsyncSql(sql, 'run', id)
+
 }
 
 const updateMeasurement = (id, newData) => {
 
-    let sql = `UPDATE measurements
+  let sql = `UPDATE measurements
                SET id = (?), 
                name = (?),
                unit = (?),
                healthyupper = (?),
                healthylower = (?)
                WHERE id = (?)`
-    
-    let preparedData = Object.values(newData).concat(id)
-    
-    return runAsyncSql(sql, 'run', preparedData)
+
+  let preparedData = Object.values(newData).concat(id)
+
+  return runAsyncSql(sql, 'run', preparedData)
 
 }
 
@@ -112,41 +112,41 @@ const updateMeasurement = (id, newData) => {
 
 const examples = [
 
-    {
-        "id": "1",
-        "name": "hemoglobin",
-        "unit": "mmol/l",
-        "healthyupper": 0.3,
-        "healthylower": 0.1
-    },
-    {
-        "id": "2",
-        "name": "temperature",
-        "unit": "mmol/l",
-        "healthyupper": 37.5,
-        "healthylower": 35
-    }
+  {
+    'id': '1',
+    'name': 'hemoglobin',
+    'unit': 'mmol/l',
+    'healthyupper': 0.3,
+    'healthylower': 0.1
+  },
+  {
+    'id': '2',
+    'name': 'temperature',
+    'unit': 'mmol/l',
+    'healthyupper': 37.5,
+    'healthylower': 35
+  }
 
 ]
 
 
 
-
+//Exportable object
 const dbOps = {
 
-    getAll() {return getAllMeasurements()},
-    
-    addOne(data) {return addMeasurement(data)},
+  getAll() {return getAllMeasurements()},
 
-    deleteOne(id) {return deleteMeasurement(id)},
+  addOne(data) {return addMeasurement(data)},
 
-    updateOne(id, newData) {return updateMeasurement(id, newData)},
+  deleteOne(id) {return deleteMeasurement(id)},
 
-    runSql(sql) {return runAsyncSql(sql)},
+  updateOne(id, newData) {return updateMeasurement(id, newData)},
 
-    ensureDB() {return ensureDb()},
+  runSql(sql) {return runAsyncSql(sql)},
 
-    examples: examples
+  ensureDB() {return ensureDb()},
+
+  examples: examples
 
 
 }
