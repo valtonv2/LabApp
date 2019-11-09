@@ -21,7 +21,15 @@ let dbErrorHandler = (err) => {
 const ensureDb = async () => {
 
   // eslint-disable-next-line quotes
-  const sql = "CREATE TABLE IF NOT EXISTS 'measurements' ( 'id' TEXT NOT NULL,  'name' TEXT NOT NULL, 'unit' TEXT NOT NULL, 'healthyupper' REAL NOT NULL, 'healthylower' REAL NOT NULL )"
+  const sql = `CREATE TABLE IF NOT EXISTS 
+  'measurements' ( 
+    'id' TEXT NOT NULL,  
+    'name' TEXT NOT NULL, 
+    'unit' TEXT NOT NULL, 
+    'healthyupper' REAL NOT NULL, 
+    'healthylower' REAL NOT NULL 
+    )`
+
   await runAsyncSql(sql, 'run', [])
   console.log('Database ensured')
 
