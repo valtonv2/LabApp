@@ -10,9 +10,6 @@ import MeasurementForm from './Components/MeasurementForm'
 // eslint-disable-next-line no-undef
 const uuidv1 = require('uuid/v1')
 
-
-
-
 const App = () => {
 
   const [allMeasurements, setMeasurements] = useState([])
@@ -42,7 +39,7 @@ const App = () => {
 
       setMeasurements(response)
 
-    })
+    }).catch(error => sendMessage('Could not get measurement data', true))
   }, [])
 
   //Utility method that makes a small message row pop up
@@ -100,7 +97,7 @@ const App = () => {
         sendMessage('Measurement added', false)
         console.log(allMeasurements)
 
-      }).catch(error => sendMessage(error.response.data.errorMessage, true))
+      }).catch(error => sendMessage('Adding measurement failed.', true))
 
     }else if(newName && newUnit && newUpper && newLower && window.confirm('A measurement with this name already exists. Do you want to update it?')){
 
@@ -121,7 +118,7 @@ const App = () => {
         console.log(allMeasurements)
         sendMessage('Measurement updated succesfully', false)
 
-      }).catch(error => sendMessage(error.response.data.errorMessage, true))
+      }).catch(error => sendMessage('Updating measurement failed.', true))
 
     }else{
       sendMessage('Add cancelled', true)

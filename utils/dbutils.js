@@ -125,6 +125,12 @@ const examples = [
     'unit': 'mmol/l',
     'healthyupper': 37.5,
     'healthylower': 35
+  },
+  {
+    'name': 'temperature',
+    'unit': 'mmol/l',
+    'healthyupper': 37.5,
+    'healthylower': 35
   }
 
 ]

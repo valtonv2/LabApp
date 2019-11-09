@@ -41,6 +41,13 @@ test('Test measurements are got properly', async () => {
 test('Test measurements are added properly', async () => {
 
   const all = await api.get('/api/measurements')
+
+  // eslint-disable-next-line no-unused-vars
+  const res1 = await api.post('/api/measurements')
+    .send(dbOps.examples[0])
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
   const res2 = await api.get('/api/measurements')
 
   expect(res2.body.length).toBe(all.body.length +1)
@@ -67,5 +74,15 @@ test('Test measurements are updated properly', async () => {
   const all = await api.get('/api/measurements')
 
   expect(all.body[0].name).toBe(dbOps.examples[1].name)
+
+})
+
+test('Broken measurement data can not be added', async () => {
+
+  // eslint-disable-next-line no-unused-vars
+  const res1 = await api.post('/api/measurements')
+    .send(dbOps.examples[2])
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
 
 })
