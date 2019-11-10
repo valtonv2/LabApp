@@ -134,15 +134,20 @@ const App = () => {
       }).catch(error => sendMessage('Updating measurement failed.', true))
 
     }else{
-      sendMessage(getErrorMessage(newName, floatUpper, floatLower, newUnit), true)
+
+      if(!newName || !newUpper || !newLower || !newUnit) sendMessage('Please fill all fields before saving.', true)
+      else if(isNaN(floatUpper) || isNaN(floatLower)) sendMessage('The reference values must be numbers.', true)
+      else if (floatUpper < floatLower) sendMessage('The upper limit cannot be smaller than the lower limit', true)
+      else return('Add cancelled.')
+      
     }
   }
 
   const getErrorMessage = (name, upper, lower, unit) => {
 
-    if(isNaN(upper) || isNaN(lower)) return('The reference values must be numbers.')
+    if(!name || !upper || !lower || !unit) return('Please fill all fields before sending.')
+    else if(isNaN(upper) || isNaN(lower)) return('The reference values must be numbers.')
     else if (upper < lower) return('The upper limit cannot be smaller than the lower limit')
-    else if(!name || !upper || !lower || !unit) return('Please fill all fields before sending.')
     else return('Add cancelled.')
   }
   

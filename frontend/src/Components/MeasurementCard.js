@@ -15,9 +15,9 @@ const MeasurementCard = ({ measurement, deleteFunction }) => {
 
           <h3>{measurement.name}</h3>
 
-          <p>Healthy upper limit: {measurement.healthyupper}</p>
+          <p>Upper reference limit: {measurement.healthyupper}</p>
 
-          <p>Healthy lower limit: {measurement.healthylower}</p>
+          <p>Lower reference limit: {measurement.healthylower}</p>
 
           <p>Unit: {measurement.unit}</p>
 

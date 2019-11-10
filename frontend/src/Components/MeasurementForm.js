@@ -18,11 +18,11 @@ const MeasurementForm = (props) => {
               </p>
 
               <p>
-              <input value={props.currentUpper} onChange={props.upperHandler}  placeholder='Healthy upper limit'/>
+              <input value={props.currentUpper} onChange={props.upperHandler}  placeholder='Upper reference limit'/>
               </p>
 
               <p>
-              <input value={props.currentLower} onChange={props.lowerHandler}  placeholder='Healthy lower limit'/>
+              <input value={props.currentLower} onChange={props.lowerHandler}  placeholder='Lower reference limit'/>
               </p>
 
               <p>
