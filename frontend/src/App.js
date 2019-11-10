@@ -143,16 +143,7 @@ const App = () => {
     }
   }
 
-  const getErrorMessage = (name, upper, lower, unit) => {
-
-    if(!name || !upper || !lower || !unit) return('Please fill all fields before sending.')
-    else if(isNaN(upper) || isNaN(lower)) return('The reference values must be numbers.')
-    else if (upper < lower) return('The upper limit cannot be smaller than the lower limit')
-    else return('Add cancelled.')
-  }
-  
-
-
+ 
   return (
     <div style={ { backgroundColor:'darkgray', position:'relative', minHeight:'100vh' } }>
       <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"/>
